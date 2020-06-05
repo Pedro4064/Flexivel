@@ -31,7 +31,8 @@ namespace Bluetooth
             const char* CHARACTERISTIC_UUID_TX = "0972EF8C-7613-4075-AD52-756F33D4DA91";
 
             BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
-        
+            BLECharacteristic* pcharacteristic;
+            
         public:
 
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe 

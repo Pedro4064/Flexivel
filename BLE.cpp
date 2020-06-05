@@ -55,7 +55,7 @@ namespace Bluetooth{
         characteristicTX->addDescriptor(new BLE2902());
 
         // Create a BLE Characteristic para recebimento de dados
-        BLECharacteristic *pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID_RX, BLECharacteristic::PROPERTY_WRITE);
+        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID_RX, BLECharacteristic::PROPERTY_WRITE);
         pcharacteristic->setCallbacks(new CharacteristicCallbacks());
 
         // Start the service
