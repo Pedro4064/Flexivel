@@ -5,12 +5,12 @@ namespace Bluetooth{
     // Methods for the ServerCallbacks class
     void ServerCallbacks::onConnect(BLEServer* pServer){
 
-        BLE.deviceConnected = true;
+        BLE::deviceConnected = true;
     }
 
     void ServerCallbacks::onDisconnect(BLEServer* pServer){
 
-        BLE.deviceConnected = false;
+        BLE::deviceConnected = false;
     }
 
 
@@ -34,7 +34,7 @@ namespace Bluetooth{
 
 
     // Methods and variables for the BLE wrapper 
-    BLE::deviceConnected = false;
+    bool BLE::deviceConnected = false;
 
     void BLE::begin(){
 
