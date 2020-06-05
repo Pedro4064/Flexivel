@@ -42,10 +42,10 @@ namespace Bluetooth{
         BLEDevice::init("ESP32-BLE"); // nome do dispositivo bluetooth
 
         // Create the BLE Server
-        BLEServer *server = BLEDevice::createServer(); //cria um BLE server 
+        BLEServer *pserver = BLEDevice::createServer(); //cria um BLE server 
 
         // Set the server's callback
-        server->setCallbacks(new ServerCallbacks());
+        pserver->setCallbacks(new ServerCallbacks());
 
         // Create the BLE Service
         BLEService *pservice = pserver->createService(SERVICE_UUID);
