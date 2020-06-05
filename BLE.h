@@ -3,8 +3,6 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 
-#include<String.h>
-#include<WString.h>
 #include<Arduino.h>
 
 namespace Bluetooth
