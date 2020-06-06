@@ -68,8 +68,8 @@ namespace Bluetooth{
         pserver->getAdvertising()->start();
     }
  
-    template<typename T>
-    void BLE::sendData(T data[]){
+    
+    void BLE::sendData(double data[]){
 
         // Create char buffer that will hold the string values 
         char buffer[5];
