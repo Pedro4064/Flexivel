@@ -14,6 +14,8 @@ namespace Bluetooth{
     }
 
 
+
+
     // Methods for the CharacteristicCallbacks class 
     void CharacteristicCallbacks::onWrite(BLECharacteristic *characteristic){
 
@@ -31,6 +33,7 @@ namespace Bluetooth{
             Serial.println();
         }
     }
+
 
 
     // Methods and variables for the BLE wrapper 
@@ -63,5 +66,13 @@ namespace Bluetooth{
 
         // Start advertising (descoberta do ESP32)
         pserver->getAdvertising()->start();
+    }
+ 
+    template<typename T>
+    void BLE::sendData(T& data){
+
+        characteristicTX->setValue(data);
+        characteristicTX->notify();
+
     }
 }
