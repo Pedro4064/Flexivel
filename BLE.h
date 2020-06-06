@@ -1,3 +1,6 @@
+#ifndef BLE_H
+#define BLE_H
+
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
@@ -19,6 +22,7 @@ namespace Bluetooth
     //callback para eventos das características
     class CharacteristicCallbacks: public BLECharacteristicCallbacks {
         void onWrite(BLECharacteristic *characteristic);
+
     };
 
     //'wrapper' involta de todo o processo de inicializar e comunicar via BLE
@@ -32,7 +36,7 @@ namespace Bluetooth
 
             BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
             BLECharacteristic* pcharacteristic;
-            
+
         public:
 
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe 
@@ -40,6 +44,12 @@ namespace Bluetooth
 
             // Method que será chamada no main void setUp() para inicializar todo o sistema BLE 
             void begin();
+
+            // Template Method that will take the data array, convert to string, send and notify the client
+            template<typename T>
+            void sendData(T& data);
+            
     };
     
 } // namespace Bluetooth
+#endif
