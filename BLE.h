@@ -47,7 +47,7 @@ namespace Bluetooth
 
             // Template Method that will take the data array, convert to string, send and notify the client
             template<typename T>
-            void sendData(T& data);
+            void sendData(T data[]);
             
     };
     
