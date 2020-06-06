@@ -69,9 +69,16 @@ namespace Bluetooth{
     }
  
     template<typename T>
-    void BLE::sendData(T& data){
+    void BLE::sendData(T data[]){
 
-        characteristicTX->setValue(data);
+        // Create char buffer that will hold the string values 
+        char buffer[5];
+
+        // Format the string
+        sprintf(buffer,"%g,%g,%g", data[0],data[1],data[2]);
+
+        // Send the string and notify the cliente 
+        characteristicTX->setValue(buffer);
         characteristicTX->notify();
 
     }
