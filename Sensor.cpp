@@ -6,7 +6,7 @@ Sensor::Sensor(){
     SPI.begin();
 }
 
-void Sensor::VoltametriaCiclica(double passo, double tensaoIni, double tensaoFin, double tensaoInv, double velocidadeScan, int NumCiclos){
+void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double tensaoIni, double tensaoFin, double tensaoInv, double velocidadeScan, int NumCiclos){
 
     LMP91000 pstat = LMP91000();
     MAX5481 gpot (5);
@@ -57,7 +57,7 @@ void Sensor::VoltametriaCiclica(double passo, double tensaoIni, double tensaoFin
     /*-----------------------------------*/
     pstat.setBias(11);
     scanRate = (Step/scanRate)*1000;
-    
+
     //Caso em que a tensão de inversão é positiva
     if(voltageInv > 0)
     {
@@ -65,6 +65,12 @@ void Sensor::VoltametriaCiclica(double passo, double tensaoIni, double tensaoFin
 
             for (double i = voltageIni; i < voltageInv; i = i + Step){
                 
+                // Array that will hold this iteration's data and at the end send it via bluetooth
+                double data[3];
+
+                // Variable that will hold the variable being calculated 
+                double new_data;
+
                 //Calculo da tensão de referência a ser usada no potenciostato
                 Vref = (i/0.2);
 
@@ -107,7 +113,8 @@ void Sensor::VoltametriaCiclica(double passo, double tensaoIni, double tensaoFin
                     Serial.print(" ; ");
                     Serial.print(z);
                     Serial.print(" ; ");
-                    Serial.println(pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12));
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
                     delay(scanRate);
                 }
 
@@ -120,9 +127,18 @@ void Sensor::VoltametriaCiclica(double passo, double tensaoIni, double tensaoFin
                     Serial.print(" ; ");
                     Serial.print(z);
                     Serial.print(" ; ");
-                    Serial.println(pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12));
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
                     delay(scanRate);
                 }
+
+                // Add the data points to the data array 
+                data[0] = i;
+                data[1] = z;
+                data[2] = new_data;
+
+                // Send the data 
+                bluetooth.sendData(new_data);
             }
 
             for (double i = voltageInv; i >= voltageEnd; i = i - Step)
