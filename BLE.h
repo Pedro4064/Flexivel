@@ -35,18 +35,34 @@ namespace Bluetooth
             const char* CHARACTERISTIC_UUID_TX = "0972EF8C-7613-4075-AD52-756F33D4DA91";
 
             BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
-            BLECharacteristic* pcharacteristic;
+            BLECharacteristic* pcharacteristic; // BLE Characteristic para recebimento de dados
 
+            // Private method that takes an std::string and slices it into an array of chars 
+            char* parseData(std::string data);
+            
         public:
 
-            // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe 
+            // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
+            // True se algum dispositivo estiver conectado ao BLE, false otherwise
             static bool deviceConnected;
 
             // Method que será chamada no main void setUp() para inicializar todo o sistema BLE 
             void begin();
 
+
             // Method that will take the data array, convert to string, send and notify the client
             void sendData(double data[]);
+
+
+            // Method overload que irá receber e parse the incomming data into an array of boubles and return its pointer
+            double* receivedData();
+
+            // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
+            int* receivedData();
+
+            // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
+            float* receivedData();
+
             
     };
     
