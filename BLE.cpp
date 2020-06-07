@@ -67,7 +67,6 @@ namespace Bluetooth{
         // Start advertising (descoberta do ESP32)
         pserver->getAdvertising()->start();
     }
- 
     
     void BLE::sendData(double data[]){
 
@@ -81,5 +80,46 @@ namespace Bluetooth{
         characteristicTX->setValue(buffer);
         characteristicTX->notify();
 
+    }
+
+    char* BLE::parseData(std::string data){
+
+        // pointer to char array that will store only the values for the important data (it will ignore , separating the data)
+        // (data.length() - 1) / 2  ---- It calculates the number of data points in the string (subtracting the , separating them)
+        char* data_characters = new char[(data.length() - 1) / 2]; 
+
+        // iterate through the string, add the characters and ignore the ,
+        int counter = 0;
+        for (char& character : data){
+
+            // Ignores the ,
+            if (character == ',')continue;
+
+            // Add the char to the array 
+            data_characters[counter] = character;
+            counter++;
+        }
+
+        return data_characters;
+
+    }
+    
+    double* BLE::receivedData(){
+
+        // Get the data 
+        std::string rxValue = pcharacteristic->getValue(); 
+
+        // If the data is empty, return a null pointer 
+        if (rxValue.length() <= 0){
+
+            return NULL;
+        }
+    
+        else{
+
+            // parse the data 
+            char* parsed_data = BLE::parseData(rxValue);
+
+        }
     }
 }
