@@ -190,8 +190,11 @@ namespace Bluetooth{
 
             for (int number = 0; number < parsed_data_info.array_size; number++){
 
-                // Populate the new double array with the double values converted from the std::strings
-                data[number] = std::stod(parsed_data_info.data_array[number]);
+                // transfor std::string to char* 
+                String string_data = parsed_data_info.data_array[number].c_str();
+
+                // Populate the new double array with the double values converted from the Strings values
+                data[number] = string_data.toDouble();
             }
 
             // Release memory back to the system 
