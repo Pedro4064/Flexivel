@@ -7,6 +7,7 @@
 #include <BLE2902.h>
 
 #include<Arduino.h>
+#include<string.h>
 
 namespace Bluetooth
 {
@@ -28,6 +29,7 @@ namespace Bluetooth
     //'wrapper' involta de todo o processo de inicializar e comunicar via BLE
     class BLE {
 
+        // Private Variables
         private:
 
             const char* SERVICE_UUID = "ab0828b1-198e-4351-b779-901fa0e0371e";
@@ -36,6 +38,9 @@ namespace Bluetooth
 
             BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
             BLECharacteristic* pcharacteristic; // BLE Characteristic para recebimento de dados
+       
+        // Public Variables 
+        public:
 
             // Create struct that will hold all essential infromation about the parsed data 
             struct data_information{
@@ -44,35 +49,37 @@ namespace Bluetooth
                 std::string* data_array;
             };
 
-            // Private method that takes an std::string and slices it into an array of chars 
-            BLE::data_information BLE::parseData(std::string data);
-            
-
-        public:
-
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
             // True se algum dispositivo estiver conectado ao BLE, false otherwise
             static bool deviceConnected;
 
+        // Private Methods 
+        private:
+
+            // Private method that takes an std::string and slices it into an array of chars 
+            BLE::data_information parseData(std::string data);
+            
+
+        // Public Methods 
+        public:
+
             // Method que será chamada no main void setUp() para inicializar todo o sistema BLE 
             void begin();
-
 
             // Method that will take the data array, convert to string, send and notify the client
             void sendData(double data[]);
 
-
             // Method overload que irá receber e parse the incomming data into an array of boubles and return its pointer
             double* receivedData();
 
-            // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
-            int* receivedData();
+            // // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
+            // int* receivedData();
 
-            // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
-            float* receivedData();
+            // // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
+            // float* receivedData();
 
             template <typename T>
-            void releaseMemoryToSystem(T* data);
+            static void releaseMemoryToSystem(T* data);
     };
     
 } // namespace Bluetooth

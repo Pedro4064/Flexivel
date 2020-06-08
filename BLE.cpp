@@ -83,7 +83,7 @@ namespace Bluetooth{
 
     }
 
-    BLE::data_information BLE::parseData(std::string data){
+    BLE::data_information parseData(std::string data){
 
 
         // Instantiate the struct that will hold all data info 
@@ -116,11 +116,13 @@ namespace Bluetooth{
             iteration_counter++;
         }
         
+       
         // Based on the number of commas separating the datapoints, calculate the array size 
         data_info.array_size = comma_counter+1;
 
         // Allocate the memory dynamically for the dataset 
         data_info.data_array = new std::string[data_info.array_size];
+       
        
         // If there are no , it means that there is only one datapoint, so add it to the struct and return it
         if (comma_counter == 0){
@@ -135,6 +137,7 @@ namespace Bluetooth{
             return data_info;
         }
 
+       
         // Create the substrings based on the comma positions for each data point that will be stored in the array 
         for (int i = 0; i < data_info.array_size; i++){
 
@@ -149,7 +152,7 @@ namespace Bluetooth{
                 data_info.data_array[i] = data.substr(comma_position[i-1]+1);
             }
 
-            // Create a substring from the position of the privious , +1 (so it does not include the comma) up to the number of characters 
+            // Create a substring from the position of the privious comma +1 (so it does not include the comma) up to the number of characters 
             // between commas -1 (so it does not include the last comma)
             else{
                 data_info.data_array[i] = data.substr(comma_position[i-1]+1,((comma_position[i] - comma_position[i-1] - 1)));
@@ -176,6 +179,7 @@ namespace Bluetooth{
             return NULL;
         }
     
+        // Else, parse the data and create an array with the correct data type from the array of string returned from the parser function
         else{
 
             // parse the data 
@@ -185,17 +189,23 @@ namespace Bluetooth{
             double* data = new double[parsed_data_info.array_size];
 
             for (int number = 0; number < parsed_data_info.array_size; number++){
-                // data[number] = std::stod(parsed_data_info.data_array[number]);
+
+                // Populate the new double array with the double values converted from the std::strings
+                data[number] = std::stod(parsed_data_info.data_array[number]);
             }
 
+            // Release memory back to the system 
+            BLE::releaseMemoryToSystem(parsed_data_info.data_array);
+
+            // return the pointer to the array 
+            return data;
         }
     }
 
-    // After receiving the data and using it to call the correct function (before the next operation of the sensors), 
-    // release the momory back to the system
+    // Release memory allocated dynamically by an array back to the system 
     template <typename T>
     void BLE::releaseMemoryToSystem(T* data){
 
-        delete data[];
+        delete[] data;
     }
 }
