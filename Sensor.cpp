@@ -84,10 +84,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send it 
-                    // 
+
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
                 }
 
@@ -101,10 +114,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send it 
-                    // 
+
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
                 }
                 
@@ -121,6 +147,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(" ; ");
                     Serial.print(z);
                     Serial.print(" ; ");
+
+                    // Calculate the current
                     new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
                     Serial.println(new_data);
                     
@@ -135,6 +163,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(" ; ");
                     Serial.print(z);
                     Serial.print(" ; ");
+
+                    // Calculate the current
                     new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
                     Serial.println(new_data);
                     
@@ -146,7 +176,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(&new_data);
+                bluetooth.sendData(data);
                 delay(scanRate);
             }
 
@@ -172,11 +202,25 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send it 
-                    // 
+
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
+                    
                 }
 
                 else if(Vref < -3300){
@@ -188,10 +232,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send it 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
                 }
                 
@@ -232,7 +289,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(&new_data);
+                bluetooth.sendData(data);
                 
                 // Wait the desired interval 
                 delay(scanRate);
@@ -256,6 +313,11 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageIni; i < voltageInv; i = i + Step){
                 
+                // Array that will hold this iteration's data and at the end send it via bluetooth
+                double data[3];
+
+                // Variable that will hold the variable being calculated 
+                double new_data;
 
                 //Calculo da tensão de referência a ser usada no potenciostato
                 Vref = (i/0.2);
@@ -269,10 +331,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send the data
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
 
                 }
@@ -285,14 +360,35 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 Serial.print(i);
                 Serial.print(" ; ");
                 Serial.println(z);
-                // 
-                // calculate the current here, populate the array and send it
-                // 
+                
+                // Calculate the current
+                new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                Serial.println(new_data);
+                
+                // Add the data points to the data array 
+                data[0] = i;
+                data[1] = z;
+                data[2] = new_data;
+
+                // Send the data 
+                bluetooth.sendData(data);
+
+                // Wait 
                 delay(scanRate);
+
+                // Continue to the next iteration
+                continue;
+
             }
 
             for (double i = voltageInv; i >= voltageEnd; i = i - Step){
 
+                // Array that will hold this iteration's data and at the end send it via bluetooth
+                double data[3];
+
+                // Variable that will hold the variable being calculated 
+                double new_data;
+
                 //Calculo da tensão de referência a ser usada no potenciostato
                 Vref = (i/0.2);
                 
@@ -305,10 +401,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send the data 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
                 }
                 
@@ -320,10 +429,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 Serial.print(i);
                 Serial.print(" ; ");
                 Serial.println(z);
-                // 
-                // calculate the current here, populate the array and send it
-                // 
+                
+                // Calculate the current
+                new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                Serial.println(new_data);
+                
+                // Add the data points to the data array 
+                data[0] = i;
+                data[1] = z;
+                data[2] = new_data;
+
+                // Send the data 
+                bluetooth.sendData(data);
+
+                // Wait 
                 delay(scanRate);
+
+                // Continue to the next iteration
+                continue;
             }
         }
         pstat.setBias(0);
@@ -337,6 +460,12 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageIni; i > voltageInv; i = i - Step)
             {
+                // Array that will hold this iteration's data and at the end send it via bluetooth
+                double data[3];
+
+                // Variable that will hold the variable being calculated 
+                double new_data;
+
                 //Calculo da tensão de referência a ser usada no potenciostato
                 Vref = (i/0.2);
 
@@ -350,10 +479,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send the data 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
 
                 }
@@ -368,10 +510,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // Calculate the current and send the data 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
                     continue;
 
                 }
@@ -388,9 +543,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // calculate the current here, populate the array 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
+                    delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
                 }
 
                 else{         
@@ -401,17 +571,37 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // calculate the current here, populate the array 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
+                    delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
                 }
 
-                // Send the data here 
-                delay(scanRate);
+                
             }
             
             for (double i = voltageInv; i <= voltageEnd; i = i + Step){
 
+                // Array that will hold this iteration's data and at the end send it via bluetooth
+                double data[3];
+
+                // Variable that will hold the variable being calculated 
+                double new_data;
+                
                 //Calculo da tensão de referência a ser usada no potenciostato
                 Vref = (i/0.2);
                 
@@ -425,7 +615,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
 
                 }
 
@@ -439,7 +646,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
                     delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
 
                 }
                 
@@ -454,9 +678,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // calculate the current here, populate the array 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
+                    delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
                     
 
                 }
@@ -469,15 +708,29 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
-                    // 
-                    // calculate the current here, populate the array 
-                    // 
+                    
+                    // Calculate the current
+                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendData(data);
+
+                    // Wait 
+                    delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
                     
 
                 }
 
-                // Send the data here 
-                delay(scanRate);
+                
             }
         }
 
@@ -487,7 +740,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
     }
 }
 
-void Sensor::Amperometria(double tensaoIni, double tensao, int tempo, int intervalo, double frequencia)
+void Sensor::Amperometria(Bluetooth::BLE& bluetooth,double tensaoIni, double tensao, int tempo, int intervalo, double frequencia)
 {
   int16_t voltage = tensao;
   const double voltageIni = tensaoIni;
