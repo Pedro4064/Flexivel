@@ -78,8 +78,12 @@ namespace Bluetooth
             // // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
             // float* receivedData();
 
+            // Release memory allocated dynamically by an array back to the system
             template <typename T>
-            static void releaseMemoryToSystem(T* data);
+            void static releaseMemoryToSystem(T* data){
+
+                delete[] data;
+            }
     };
     
 } // namespace Bluetooth

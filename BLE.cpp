@@ -83,7 +83,7 @@ namespace Bluetooth{
 
     }
 
-    BLE::data_information parseData(std::string data){
+    BLE::data_information BLE::parseData(std::string data){
 
 
         // Instantiate the struct that will hold all data info 
@@ -204,11 +204,5 @@ namespace Bluetooth{
             return data;
         }
     }
-
-    // Release memory allocated dynamically by an array back to the system 
-    template <typename T>
-    void BLE::releaseMemoryToSystem(T* data){
-
-        delete[] data;
-    }
+    
 }
