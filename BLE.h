@@ -37,9 +37,17 @@ namespace Bluetooth
             BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
             BLECharacteristic* pcharacteristic; // BLE Characteristic para recebimento de dados
 
+            // Create struct that will hold all essential infromation about the parsed data 
+            struct data_information{
+
+                int array_size;
+                std::string* data_array;
+            };
+
             // Private method that takes an std::string and slices it into an array of chars 
-            char* parseData(std::string data);
+            BLE::data_information BLE::parseData(std::string data);
             
+
         public:
 
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
@@ -63,7 +71,8 @@ namespace Bluetooth
             // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
             float* receivedData();
 
-            
+            template <typename T>
+            void releaseMemoryToSystem(T* data);
     };
     
 } // namespace Bluetooth
