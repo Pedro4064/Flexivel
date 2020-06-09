@@ -95,7 +95,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -125,7 +125,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -176,7 +176,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(data);
+                bluetooth.sendDataArray(data,3);
                 delay(scanRate);
             }
 
@@ -213,7 +213,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -243,7 +243,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -289,7 +289,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(data);
+                bluetooth.sendDataArray(data,3);
                 
                 // Wait the desired interval 
                 delay(scanRate);
@@ -342,7 +342,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -371,7 +371,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(data);
+                bluetooth.sendDataArray(data,3);
 
                 // Wait 
                 delay(scanRate);
@@ -412,7 +412,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -440,7 +440,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendData(data);
+                bluetooth.sendDataArray(data,3);
 
                 // Wait 
                 delay(scanRate);
@@ -490,7 +490,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -521,7 +521,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -554,7 +554,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -582,7 +582,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -626,7 +626,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -657,7 +657,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -689,7 +689,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
@@ -719,7 +719,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendData(data);
+                    bluetooth.sendDataArray(data,3);
 
                     // Wait 
                     delay(scanRate);
