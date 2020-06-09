@@ -21,8 +21,8 @@ void loop() {
   //se existe algum dispositivo conectado
   if(Bluetooth::BLE::deviceConnected)
   {
-    // Receive the data 
-    double* incoming_data = bluetooth.receivedData();
+    // Receive the data as an array of doubles 
+    double* incoming_data = bluetooth.receivedDataAsDouble();
 
     // Check if there is actual data or if it's null 
     if (incoming_data != NULL){
