@@ -160,7 +160,7 @@ namespace Bluetooth{
 
     }
     
-    double* BLE::receivedDataAsDouble(){
+    double* BLE::receivedDataAsDoubleArray(){
 
         // Get the data 
         std::string rxValue = pcharacteristic->getValue(); 

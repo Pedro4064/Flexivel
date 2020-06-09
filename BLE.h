@@ -72,7 +72,7 @@ namespace Bluetooth
             void setDeviceName(std::string name);
 
             // Method que irá receber e parse the incomming data into an array of boubles and return its pointer
-            double* receivedDataAsDouble();
+            double* receivedDataAsDoubleArray();
 
             // Method que irá receber e transformar the incomming data into a string 
             String receivedDataAsString();

@@ -22,7 +22,7 @@ void loop() {
   if(Bluetooth::BLE::deviceConnected)
   {
     // Receive the data as an array of doubles 
-    double* incoming_data = bluetooth.receivedDataAsDouble();
+    double* incoming_data = bluetooth.receivedDataAsDoubleArray();
 
     // Check if there is actual data or if it's null 
     if (incoming_data != NULL){
