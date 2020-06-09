@@ -43,7 +43,7 @@ namespace Bluetooth{
     void BLE::begin(){
 
         // Create the BLE Device
-        BLEDevice::init("ESP32-BLE"); // nome do dispositivo bluetooth
+        BLEDevice::init(DeviceName); // nome do dispositivo bluetooth
 
         // Create the BLE Server
         BLEServer *pserver = BLEDevice::createServer(); //cria um BLE server 
@@ -68,21 +68,13 @@ namespace Bluetooth{
         // Start advertising (descoberta do ESP32)
         pserver->getAdvertising()->start();
     }
-    
-    void BLE::sendData(double data[]){
 
-        // Create char buffer that will hold the string values 
-        char buffer[5];
+    void BLE::setDeviceName(std::string name){
 
-        // Format the string
-        sprintf(buffer,"%g,%g,%g", data[0],data[1],data[2]);
-
-        // Send the string and notify the cliente 
-        characteristicTX->setValue(buffer);
-        characteristicTX->notify();
-
+        // set the device name 
+        DeviceName = name;
     }
-
+   
     BLE::data_information BLE::parseData(std::string data){
 
 
@@ -168,7 +160,7 @@ namespace Bluetooth{
 
     }
     
-    double* BLE::receivedData(){
+    double* BLE::receivedDataAsDouble(){
 
         // Get the data 
         std::string rxValue = pcharacteristic->getValue(); 
@@ -205,4 +197,21 @@ namespace Bluetooth{
         }
     }
     
+    String BLE::receivedDataAsString(){
+
+        // Get the data 
+        std::string rxValue = pcharacteristic->getValue(); 
+
+        // If the data is empty, return a null pointer 
+        if (rxValue.length() <= 0){
+
+            return "";
+        }
+    
+        else{
+
+            String data_string = rxValue.c_str();
+            return data_string;
+        }
+    }
 }

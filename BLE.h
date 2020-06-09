@@ -36,9 +36,11 @@ namespace Bluetooth
             const char* CHARACTERISTIC_UUID_RX = "4ac8a682-9736-4e5d-932b-e9b31405049c";
             const char* CHARACTERISTIC_UUID_TX = "0972EF8C-7613-4075-AD52-756F33D4DA91";
 
-            BLECharacteristic* characteristicTX; //através desse objeto iremos enviar dados para o client
-            BLECharacteristic* pcharacteristic; // BLE Characteristic para recebimento de dados
+            BLECharacteristic* characteristicTX;  // Através desse objeto iremos enviar dados para o client
+            BLECharacteristic* pcharacteristic;   // BLE Characteristic para recebimento de dados
        
+            std::string DeviceName = "ESP32-BLE"; // Default name for the device 
+
         // Public Variables 
         public:
 
@@ -66,18 +68,49 @@ namespace Bluetooth
             // Method que será chamada no main void setUp() para inicializar todo o sistema BLE 
             void begin();
 
-            // Method that will take the data array, convert to string, send and notify the client
-            void sendData(double data[]);
+            // Method to set the name which the ESP32 will be discoverable to other deivces
+            void setDeviceName(std::string name);
 
-            // Method overload que irá receber e parse the incomming data into an array of boubles and return its pointer
-            double* receivedData();
+            // Method que irá receber e parse the incomming data into an array of boubles and return its pointer
+            double* receivedDataAsDouble();
 
-            // // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
-            // int* receivedData();
+            // Method que irá receber e transformar the incomming data into a string 
+            String receivedDataAsString();
 
-            // // Method overload que irá receber e parse the incomming data into an array of ints and return its pointer
-            // float* receivedData();
+            // Method template that will take the data array, convert to string, send and notify the client
+            template <typename T>
+            void sendDataArray(T data[], int array_size){
 
+                String data_string = ""; //String variable that will hold the string verion of the Variables
+                String delimiter = ",";  //Special character that will separate the datapoints 
+
+                for (int i = 0; i < array_size; i++){
+
+                    // Attack the new string formatted data to the data_string variable 
+                    data_string+=String(data[i]);
+
+                    // If its not the last number in the array, add the delimiter
+                    if (i != array_size-1) data_string+=delimiter;
+    
+                }
+
+                // Send the string and notify the cliente 
+                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                characteristicTX->notify();
+
+            }
+
+            // Method template that will send one data point via BLE 
+            template <typename T>
+            void sendDataPoint(T data_point){
+
+                String data_string = String(data_point);
+
+                // Send the string and notify the cliente 
+                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                characteristicTX->notify();
+            }
+           
             // Release memory allocated dynamically by an array back to the system
             template <typename T>
             void static releaseMemoryToSystem(T* data){
