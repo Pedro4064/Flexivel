@@ -197,6 +197,82 @@ namespace Bluetooth{
         }
     }
     
+    int* BLE::receivedDataAsIntArray(){
+
+        // Get the data 
+        std::string rxValue = pcharacteristic->getValue(); 
+
+        // If the data is empty, return a null pointer 
+        if (rxValue.length() <= 0){
+
+            return NULL;
+        }
+    
+        // Else, parse the data and create an array with the correct data type from the array of string returned from the parser function
+        else{
+
+            // parse the data 
+            BLE::data_information parsed_data_info = BLE::parseData(rxValue);
+
+            // Create an array of type double to hold the values as actual numbers 
+            int* data = new int[parsed_data_info.array_size];
+
+            for (int number = 0; number < parsed_data_info.array_size; number++){
+
+                // transfor std::string to char* 
+                String string_data = parsed_data_info.data_array[number].c_str();
+
+                // Populate the new double array with the double values converted from the Strings values
+                data[number] = string_data.toInt();
+            }
+
+            // Release memory back to the system 
+            BLE::releaseMemoryToSystem(parsed_data_info.data_array);
+
+            // return the pointer to the array 
+            return data;
+        }
+
+    }
+
+    float* BLE::receivedDataAsFloatArray(){
+
+        // Get the data 
+        std::string rxValue = pcharacteristic->getValue(); 
+
+        // If the data is empty, return a null pointer 
+        if (rxValue.length() <= 0){
+
+            return NULL;
+        }
+    
+        // Else, parse the data and create an array with the correct data type from the array of string returned from the parser function
+        else{
+
+            // parse the data 
+            BLE::data_information parsed_data_info = BLE::parseData(rxValue);
+
+            // Create an array of type double to hold the values as actual numbers 
+            float* data = new float[parsed_data_info.array_size];
+
+            for (int number = 0; number < parsed_data_info.array_size; number++){
+
+                // transfor std::string to char* 
+                String string_data = parsed_data_info.data_array[number].c_str();
+
+                // Populate the new double array with the double values converted from the Strings values
+                data[number] = string_data.toFloat();
+            }
+
+            // Release memory back to the system 
+            BLE::releaseMemoryToSystem(parsed_data_info.data_array);
+
+            // return the pointer to the array 
+            return data;
+        }
+        
+    }
+   
     String BLE::receivedDataAsString(){
 
         // Get the data 

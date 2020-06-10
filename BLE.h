@@ -41,6 +41,7 @@ namespace Bluetooth
        
             std::string DeviceName = "ESP32-BLE"; // Default name for the device 
 
+
         // Public Variables 
         public:
 
@@ -54,6 +55,7 @@ namespace Bluetooth
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
             // True se algum dispositivo estiver conectado ao BLE, false otherwise
             static bool deviceConnected;
+
 
         // Private Methods 
         private:
@@ -71,12 +73,22 @@ namespace Bluetooth
             // Method to set the name which the ESP32 will be discoverable to other deivces
             void setDeviceName(std::string name);
 
+           
+           
             // Method que irá receber e parse the incomming data into an array of boubles and return its pointer
             double* receivedDataAsDoubleArray();
-
+           
+            // Mehtod that will receive the string data, parse it and return an int array with all datapoints 
+            int* receivedDataAsIntArray();
+           
+            // Mehtod that will receive the string data, parse it and return a float array with all datapoints 
+            float* receivedDataAsFloatArray();
+           
             // Method que irá receber e transformar the incomming data into a string 
             String receivedDataAsString();
 
+           
+           
             // Method template that will take the data array, convert to string, send and notify the client
             template <typename T>
             void sendDataArray(T data[], int array_size){
