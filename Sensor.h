@@ -22,16 +22,6 @@ class Sensor{
         // Method that calculates and sends the current for each step in the measuring scenario in which the inversion voltage in positive 
         void positiveVoltageCurrentProcessing(Bluetooth::BLE& bluetooth, LMP91000& pstat, MAX5481& gpot, double& i);
     
-        // Private Variables 
-        double Step;
-        double voltageIni;
-        double voltageEnd;
-        double voltageInv;
-        double scanRate;
-        double Vref;
-        int cicles;
-        int z;
-
     public: 
         Sensor();
         void VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double tensaoIni, double tensaoFin, double tensaoInv, double velocidadeScan, int NumCiclos);
