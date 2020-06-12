@@ -12,7 +12,7 @@
 •[Examples](#examples)
 
 
----
+
 ## Public Methods
 1. [setDeviceName](#1-setdevicename)
 2. [begin](#2-begin)
@@ -136,7 +136,7 @@ void static releaseMemoryToSystem(T* data){...}
 • A template method that takes a pointer to an array that was allocated dynamically, and releases the memory back to the system.
 
 
----
+
 
 ## Public Variables
 • The only public variable is a custom datatype(struct) used to store all the information related to the received data, that will be used to parse and convert it.
@@ -149,7 +149,7 @@ struct data_information{
 
 };
 ```
----
+
 
 ## Private Methods
 
@@ -161,7 +161,7 @@ struct data_information{
 BLE::data_information parseData(std::string data);
 ```
 
----
+
 
 ## Private Variables 
 •Internal variables that are accessible only by methods:
@@ -172,7 +172,7 @@ BLE::data_information parseData(std::string data);
 |`const char*`|CHARACTERISTIC_UUID_RX|`4ac8a682-9736-4e5d-932b-e9b31405049c`|
 |`const char*`|CHARACTERISTIC_UUID_TX|`0972EF8C-7613-4075-AD52-756F33D4DA91`|
 |`std::string`|DeviceName|`"ESP32-BLE"`|
----
+
 
 ## Static members 
 • A static member is a variable or a method that can be accessed without having the need to instantiate the class nor use an object. Furthermore, it is common to all instances of the class (i.e They share the same variable).
@@ -187,6 +187,7 @@ if (Bluetooth::BLE::deviceConnected){...}
 // If there is no device...
 else if (!Bluetooth::BLE::deviceConnected){...}
 ```
+
 ## Examples
 
 ```c++
