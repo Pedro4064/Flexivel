@@ -14,6 +14,23 @@ class Sensor{
     private:
         
         signed char determineLMP91000Bias(double Voltage);
+        inline double currentCalculation(LMP91000& pstat,int z);
+        inline double negativeMinVoltageCurrentCalculator(LMP91000& pstat, MAX5481& gpot, double Vref);
+        inline double positiveMaxVoltageCurrentCalculator(LMP91000& pstat, MAX5481& gpot, double Vref);
+        inline int calculateZ(double Vref);
+
+        // Method that calculates and sends the current for each step in the measuring scenario in which the inversion voltage in positive 
+        void positiveVoltageCurrentProcessing(Bluetooth::BLE& bluetooth, LMP91000& pstat, MAX5481& gpot, double& i);
+    
+        // Private Variables 
+        double Step;
+        double voltageIni;
+        double voltageEnd;
+        double voltageInv;
+        double scanRate;
+        double Vref;
+        int cicles;
+        int z;
 
     public: 
         Sensor();

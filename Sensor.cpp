@@ -77,16 +77,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref > 3300){
 
-                    pstat.setPosBias();
-                    z = Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -116,7 +108,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     Serial.println(z);
 
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -134,50 +126,57 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     continue;
                 }
                 
-                z = (((Vref)/5)*6);
-                z = z + (z/6)/5;
-
-                if(z < 0){
-                        
-                    z = z*(-1);
-                    pstat.setNegBias();
-                    ledcWrite(oscpin, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.print(z);
-                    Serial.print(" ; ");
-
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                }
-
                 else{
-                        
-                    pstat.setPosBias();
-                    ledcWrite(oscpin, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.print(z);
-                    Serial.print(" ; ");
 
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
+                    z = calculateZ(Vref);
+
+                    if(z < 0){
+                            
+                        z = z*(-1);
+                        pstat.setNegBias();
+
+                        ledcWrite(oscpin, z);
+                        delay(1);
+
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.print(z);
+                        Serial.print(" ; ");
+
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                    }
+
+                    else{
+                            
+                        pstat.setPosBias();
+
+                        ledcWrite(oscpin, z);
+                        delay(1);
+                        
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.print(z);
+                        Serial.print(" ; ");
+
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                    }
+
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendDataArray(data,3);
+                    delay(scanRate);
                 }
 
-                // Add the data points to the data array 
-                data[0] = i;
-                data[1] = z;
-                data[2] = new_data;
-
-                // Send the data 
-                bluetooth.sendDataArray(data,3);
-                delay(scanRate);
             }
 
             for (double i = voltageInv; i >= voltageEnd; i = i - Step)
@@ -195,16 +194,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref > 3300){
                         
-                    pstat.setPosBias();
-                    z = Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    // Calculate the current 
+                    new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -224,17 +215,21 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 }
 
                 else if(Vref < -3300){
+
                     pstat.setNegBias();
+                    
                     z = Vref/5;
                     z = z*(-1);
+                    
                     gpot.setWiper(z);
                     gpot.writeWiper();
+                    
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
                     
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -252,47 +247,54 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     continue;
                 }
                 
-                z = (((Vref)/5)*6);
-                z = z + (z/6)/5;
-
-                if(z > 0){
-
-                    ledcWrite(oscpin, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.print(z);
-                    Serial.print(" ; ");
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                }
-
                 else{
+
+                    z = calculateZ(Vref);
+
+                    if(z > 0){
+
+                        ledcWrite(oscpin, z);
+                        delay(1);
+
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.print(z);
+                        Serial.print(" ; ");
                         
-                    z = z*(-1);
-                    pstat.setNegBias();
-                    ledcWrite(oscpin, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.print(z);
-                    Serial.print(" ; ");
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                    }
+
+                    else{
+                            
+                        z = z*(-1);
+                        pstat.setNegBias();
+
+                        ledcWrite(oscpin, z);
+                        delay(1);
+                        
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.print(z);
+                        Serial.print(" ; ");
+                        
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                    }
+
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
+
+                    // Send the data 
+                    bluetooth.sendDataArray(data,3);
                     
+                    // Wait the desired interval 
+                    delay(scanRate);
                 }
-
-                // Add the data points to the data array 
-                data[0] = i;
-                data[1] = z;
-                data[2] = new_data;
-
-                // Send the data 
-                bluetooth.sendDataArray(data,3);
-                
-                // Wait the desired interval 
-                delay(scanRate);
             }
         }
 
@@ -325,15 +327,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref < -3300){
 
-                    z = -Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
                     
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = negativeMinVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -352,32 +348,37 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
                 }
                 
-                z = (((Vref)/5)*6);
-                z = z - (z/6)/5;
-                z = z*(-1);
-                ledcWrite(oscpin1, z);
-                delay(1);
-                Serial.print(i);
-                Serial.print(" ; ");
-                Serial.println(z);
-                
-                // Calculate the current
-                new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                Serial.println(new_data);
-                
-                // Add the data points to the data array 
-                data[0] = i;
-                data[1] = z;
-                data[2] = new_data;
+                else {
+                    
+                    z = (((Vref)/5)*6);
+                    z = z - (z/6)/5;
+                    z = z*(-1);
 
-                // Send the data 
-                bluetooth.sendDataArray(data,3);
+                    ledcWrite(oscpin1, z);
+                    delay(1);
 
-                // Wait 
-                delay(scanRate);
+                    Serial.print(i);
+                    Serial.print(" ; ");
+                    Serial.println(z);
+                    
+                    // Calculate the current
+                    new_data = currentCalculation(pstat, z);
+                    Serial.println(new_data);
+                    
+                    // Add the data points to the data array 
+                    data[0] = i;
+                    data[1] = z;
+                    data[2] = new_data;
 
-                // Continue to the next iteration
-                continue;
+                    // Send the data 
+                    bluetooth.sendDataArray(data,3);
+
+                    // Wait 
+                    delay(scanRate);
+
+                    // Continue to the next iteration
+                    continue;
+                }
 
             }
 
@@ -395,15 +396,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref < -3300){
 
-                    z = -Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data =negativeMinVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -424,14 +418,16 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 z = (((Vref)/5)*6);
                 z = z - (z/6)/5;
                 z = z*(-1);
+
                 ledcWrite(oscpin1, z);
                 delay(1);
+                
                 Serial.print(i);
                 Serial.print(" ; ");
                 Serial.println(z);
                 
                 // Calculate the current
-                new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                new_data = currentCalculation(pstat, z);
                 Serial.println(new_data);
                 
                 // Add the data points to the data array 
@@ -454,7 +450,7 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
     }
     
     //Caso em que a tensão de inversão é positiva
-    else if(voltageInv < 0)
+    else if(voltageInv < 0) 
     {
         for (int j = 0; j < cicles; j++){
 
@@ -472,16 +468,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref > 3300){
                         
-                    pstat.setPosBias();
-                    z = Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -500,19 +488,23 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
                 }
 
+                //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 else if(Vref < -3300){
 
                     pstat.setNegBias();
+                    
                     z = Vref/5;
+                    
                     z = z*(-1);
                     gpot.setWiper(z);
                     gpot.writeWiper();
+                    
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
                     
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -530,65 +522,69 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     continue;
 
                 }
+
+                // Se a tensão de referência estiver dentro da capacidade do ESP32, usaremos ele 
+                else {
+                    
+                    z = calculateZ(Vref);
+
+                    if(z < 0){
+
+                        z = z*(-1);
+                        pstat.setNegBias();
+                        ledcWrite(oscpin1, z);
+                        delay(1);
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.println(z);
+                        
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                        // Add the data points to the data array 
+                        data[0] = i;
+                        data[1] = z;
+                        data[2] = new_data;
+
+                        // Send the data 
+                        bluetooth.sendDataArray(data,3);
+
+                        // Wait 
+                        delay(scanRate);
+
+                        // Continue to the next iteration
+                        continue;
+                    }
                 
-                z = (((Vref)/5)*6);
-                z = z + (z/6)/5;
+                    else{         
 
-                if(z < 0){
+                        pstat.setPosBias();
+                        ledcWrite(oscpin1, z);
+                        delay(1);
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.println(z);
+                        
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                        // Add the data points to the data array 
+                        data[0] = i;
+                        data[1] = z;
+                        data[2] = new_data;
 
-                    z = z*(-1);
-                    pstat.setNegBias();
-                    ledcWrite(oscpin1, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
+                        // Send the data 
+                        bluetooth.sendDataArray(data,3);
 
-                    // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                        // Wait 
+                        delay(scanRate);
 
-                    // Wait 
-                    delay(scanRate);
-
-                    // Continue to the next iteration
-                    continue;
-                }
-
-                else{         
-
-                    pstat.setPosBias();
-                    ledcWrite(oscpin1, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
-
-                    // Send the data 
-                    bluetooth.sendDataArray(data,3);
-
-                    // Wait 
-                    delay(scanRate);
-
-                    // Continue to the next iteration
-                    continue;
+                        // Continue to the next iteration
+                        continue;
+                    }
+                
                 }
 
                 
@@ -608,16 +604,8 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 if(Vref > 3300){
                         
-                    pstat.setPosBias();
-                    z = Vref/5;
-                    gpot.setWiper(z);
-                    gpot.writeWiper();
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -635,20 +623,24 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     continue;
 
                 }
-
+                
+                //Caso a tensão de referência for maior ou menor que |3.3|v,  será usado o potenciometro digital para fornecê-la
                 else if(Vref < -3300){
                         
                     pstat.setNegBias();
+                    
                     z = Vref/5;
                     z = z*(-1);
+                    
                     gpot.setWiper(z);
                     gpot.writeWiper();
+                    
                     Serial.print(i);
                     Serial.print(" ; ");
                     Serial.println(z);
                     
                     // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+                    new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
                     // Add the data points to the data array 
@@ -666,70 +658,77 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     continue;
 
                 }
-                
-                z = (((Vref)/5)*6);
-                z = z + (z/6)/5;
-                
-                if(z > 0){
 
-                    pstat.setPosBias();
-                    ledcWrite(oscpin1, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
-
-                    // Send the data 
-                    bluetooth.sendDataArray(data,3);
-
-                    // Wait 
-                    delay(scanRate);
-
-                    // Continue to the next iteration
-                    continue;
-                    
-
-                }
-
+                // Se a tensão de referência estiver dentro da capacidade do ESP32, usaremos ele  
                 else{
+
+                    z = calculateZ(Vref);
+                    
+                    if(z > 0){
+
+                        pstat.setPosBias();
+
+                        ledcWrite(oscpin1, z);
+                        delay(1);
                         
-                    z = z*(-1);
-                    ledcWrite(oscpin1, z);
-                    delay(1);
-                    Serial.print(i);
-                    Serial.print(" ; ");
-                    Serial.println(z);
-                    
-                    // Calculate the current
-                    new_data = pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
-                    Serial.println(new_data);
-                    
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.println(z);
+                        
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                        // Add the data points to the data array 
+                        data[0] = i;
+                        data[1] = z;
+                        data[2] = new_data;
 
-                    // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                        // Send the data 
+                        bluetooth.sendDataArray(data,3);
 
-                    // Wait 
-                    delay(scanRate);
+                        // Wait 
+                        delay(scanRate);
 
-                    // Continue to the next iteration
-                    continue;
-                    
+                        // Continue to the next iteration
+                        continue;
+                        
 
+                    }
+
+                    else{
+                            
+                        z = z*(-1);
+                        
+                        ledcWrite(oscpin1, z);
+                        delay(1);
+                        
+                        Serial.print(i);
+                        Serial.print(" ; ");
+                        Serial.println(z);
+                        
+                        // Calculate the current
+                        new_data = currentCalculation(pstat, z);
+                        Serial.println(new_data);
+                        
+                        // Add the data points to the data array 
+                        data[0] = i;
+                        data[1] = z;
+                        data[2] = new_data;
+
+                        // Send the data 
+                        bluetooth.sendDataArray(data,3);
+
+                        // Wait 
+                        delay(scanRate);
+
+                        // Continue to the next iteration
+                        continue;
+                        
+
+                    }
+               
                 }
-
                 
             }
         }
@@ -739,6 +738,50 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
     }
 }
+
+
+int Sensor::calculateZ (double Vref){
+
+    int z = (((Vref)/5)*6);
+    z = z + (z/6)/5;
+
+    return z;
+}
+
+double Sensor::currentCalculation(LMP91000& pstat,int z){
+
+    return pow(10,6)*pstat.getCurrent((z), 3300/1000.0, 12);
+}
+
+double Sensor::negativeMinVoltageCurrentCalculator(LMP91000& pstat, MAX5481& gpot, double Vref) {
+
+    int z = -Vref/5;
+    gpot.setWiper(z);
+    gpot.writeWiper();
+    
+    // Calculate the current
+    double new_data = currentCalculation(pstat, z);
+
+    // return the reuslt found 
+    return new_data;
+    
+}
+
+double Sensor::positiveMaxVoltageCurrentCalculator(LMP91000& pstat, MAX5481& gpot, double Vref){
+
+    pstat.setPosBias();
+    int z = Vref/5;
+    gpot.setWiper(z);
+    gpot.writeWiper();
+
+    // Calculate the current
+    double new_data = currentCalculation(pstat, z);
+    return new_data;
+    
+}
+
+
+
 
 void Sensor::Amperometria(Bluetooth::BLE& bluetooth,double tensaoIni, double tensao, int tempo, int intervalo, double frequencia)
 {
