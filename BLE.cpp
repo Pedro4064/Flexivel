@@ -86,7 +86,7 @@ namespace Bluetooth{
         for (char& character : data){
 
             // count the number of ,
-            if (character == ',')comma_counter++;
+            if (character == ';')comma_counter++;
         }
 
 
@@ -99,7 +99,7 @@ namespace Bluetooth{
         for (char& character : data){
 
             // count the number of ,
-            if (character == ','){
+            if (character == ';'){
 
                 comma_position[array_empty_spot] = iteration_counter;
                 array_empty_spot++;
