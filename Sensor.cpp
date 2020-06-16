@@ -65,9 +65,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageIni; i < voltageInv; i = i + Step){
                 
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
-
                 // Variable that will hold the variable being calculated 
                 double new_data;
 
@@ -81,13 +78,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -111,13 +104,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -167,13 +156,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         
                     }
 
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
-
+                    
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
                     delay(scanRate);
                 }
 
@@ -182,8 +167,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
             for (double i = voltageInv; i >= voltageEnd; i = i - Step)
             {
 
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
 
                 // Variable that will hold the variable being calculated 
                 double new_data;
@@ -198,13 +181,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -232,13 +211,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -284,13 +259,10 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         
                     }
 
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
+                    
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
                     
                     // Wait the desired interval 
                     delay(scanRate);
@@ -315,8 +287,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageIni; i < voltageInv; i = i + Step){
                 
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
 
                 // Variable that will hold the variable being calculated 
                 double new_data;
@@ -332,13 +302,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = negativeMinVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -365,13 +331,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -384,8 +346,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageInv; i >= voltageEnd; i = i - Step){
 
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
 
                 // Variable that will hold the variable being calculated 
                 double new_data;
@@ -400,13 +360,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data =negativeMinVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -429,14 +385,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                 // Calculate the current
                 new_data = currentCalculation(pstat, z);
                 Serial.println(new_data);
-                
-                // Add the data points to the data array 
-                data[0] = i;
-                data[1] = z;
-                data[2] = new_data;
 
                 // Send the data 
-                bluetooth.sendDataArray(data,3);
+                bluetooth.sendDataPoint(new_data);
 
                 // Wait 
                 delay(scanRate);
@@ -456,8 +407,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
 
             for (double i = voltageIni; i > voltageInv; i = i - Step)
             {
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
 
                 // Variable that will hold the variable being calculated 
                 double new_data;
@@ -472,13 +421,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -507,13 +452,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -542,13 +483,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         new_data = currentCalculation(pstat, z);
                         Serial.println(new_data);
                         
-                        // Add the data points to the data array 
-                        data[0] = i;
-                        data[1] = z;
-                        data[2] = new_data;
 
                         // Send the data 
-                        bluetooth.sendDataArray(data,3);
+                        bluetooth.sendDataPoint(new_data);
 
                         // Wait 
                         delay(scanRate);
@@ -570,13 +507,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         new_data = currentCalculation(pstat, z);
                         Serial.println(new_data);
                         
-                        // Add the data points to the data array 
-                        data[0] = i;
-                        data[1] = z;
-                        data[2] = new_data;
 
                         // Send the data 
-                        bluetooth.sendDataArray(data,3);
+                        bluetooth.sendDataPoint(new_data);
 
                         // Wait 
                         delay(scanRate);
@@ -592,8 +525,6 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
             
             for (double i = voltageInv; i <= voltageEnd; i = i + Step){
 
-                // Array that will hold this iteration's data and at the end send it via bluetooth
-                double data[3];
 
                 // Variable that will hold the variable being calculated 
                 double new_data;
@@ -608,13 +539,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = positiveMaxVoltageCurrentCalculator(pstat,gpot,Vref);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -643,13 +570,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                     new_data = currentCalculation(pstat, z);
                     Serial.println(new_data);
                     
-                    // Add the data points to the data array 
-                    data[0] = i;
-                    data[1] = z;
-                    data[2] = new_data;
 
                     // Send the data 
-                    bluetooth.sendDataArray(data,3);
+                    bluetooth.sendDataPoint(new_data);
 
                     // Wait 
                     delay(scanRate);
@@ -679,13 +602,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         new_data = currentCalculation(pstat, z);
                         Serial.println(new_data);
                         
-                        // Add the data points to the data array 
-                        data[0] = i;
-                        data[1] = z;
-                        data[2] = new_data;
 
                         // Send the data 
-                        bluetooth.sendDataArray(data,3);
+                        bluetooth.sendDataPoint(new_data);
 
                         // Wait 
                         delay(scanRate);
@@ -711,13 +630,9 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double t
                         new_data = currentCalculation(pstat, z);
                         Serial.println(new_data);
                         
-                        // Add the data points to the data array 
-                        data[0] = i;
-                        data[1] = z;
-                        data[2] = new_data;
 
                         // Send the data 
-                        bluetooth.sendDataArray(data,3);
+                        bluetooth.sendDataPoint(new_data);
 
                         // Wait 
                         delay(scanRate);
