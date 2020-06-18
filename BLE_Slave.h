@@ -18,7 +18,7 @@ namespace Bluetooth_slave
 
     class BLE_Slave{
 
-        // private variable
+        //////////////////////////// private variable ////////////////////////////
         private:
             BLEClient* bluetooth_client;
             BLERemoteService* bluetooth_service;
@@ -28,7 +28,8 @@ namespace Bluetooth_slave
             const char* characteristic_uuid;
 
 
-        // public variables 
+
+        //////////////////////////// public variables ////////////////////////////
         public:
 
             // Create struct that will hold all essential infromation about the parsed data 
@@ -57,7 +58,7 @@ namespace Bluetooth_slave
             bool connected_to_server = false;
 
 
-        // Public methods 
+        //////////////////////////// Public methods ////////////////////////////
         public:
 
             // Constructor for the class, it takes the name of the target deivce, the service uuid and the characteristic_uuid
