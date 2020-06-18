@@ -33,6 +33,9 @@ void loop(){
             // But remember to release memory back to the system 
             Bluetooth_slave::BLE_Slave::releaseMemoryToSystem<int>(int_data);
             
+            // since we read the data, change the message_read value to true, so we don't read the same data twice
+            ble_module.message_read = true;
+
         }
     }
 }
