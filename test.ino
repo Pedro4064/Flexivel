@@ -8,7 +8,7 @@ std::string target_name = "ESP-32";
 // Creat the instances of the classes and start the ble communication 
 Bluetooth_slave::BLE_Slave ble_module(target_name, service_uuid, characteristic_uuid);
 
-void setUp(){
+void setup(){
 
     
 }
