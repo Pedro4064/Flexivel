@@ -15,6 +15,9 @@ namespace Bluetooth_slave
 
             *bluetooth_module->target_device_address = device.getAddress();
             bluetooth_module->scan->stop();
+
+            // connect to the server 
+            bluetooth_module->connect_to_server();
         }
     }
     
@@ -35,5 +38,21 @@ namespace Bluetooth_slave
 
         // start the scan for 60 seconds
         scan->start(60);
+    }
+
+    void BLE_Slave::connect_to_server(){
+
+        // create a client 
+        bluetooth_client = BLEDevice::createClient();
+
+        // Connect to the device and pass (and dereference) the target's address
+        bluetooth_client->connect(*target_device_address);
+
+        // Request a reference for the service (so we know which one and can read/write for that service)
+        bluetooth_service = bluetooth_client->getService(*service_uuid);
+
+        // Ask for the reference for the characterist we are interested in 
+        bluetooth_target_characteristc = bluetooth_service->getCharacteristic(*characteristic_uuid);
+
     }
 } // namespace Bluetooth_slave

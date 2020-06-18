@@ -16,6 +16,15 @@ namespace Bluetooth_slave
 
     class BLE_Slave{
 
+        private:
+            BLEClient* bluetooth_client;
+            BLERemoteService* bluetooth_service;
+            BLERemoteCharacteristic* bluetooth_target_characteristc;
+
+            BLEUUID* service_uuid;
+            uint16_t* characteristic_uuid;
+
+
         public:
             // Variable that will hold the name of the target device 
             std::string target_device_name; 
@@ -26,8 +35,14 @@ namespace Bluetooth_slave
             // Scan object
             BLEScan* scan;
             
+            // Bool variable to keep track rather we are connected to the server 
+            bool connected_to_server = false;
+
             // Constructor for the class, it takes the name of the target deivce as an std::string 
             BLE_Slave(std::string t_name);
+
+            // void method to connect to the server 
+            void connect_to_server();
     };
 
     class MyCallbacks : public BLEAdvertisedDeviceCallbacks{
@@ -45,6 +60,7 @@ namespace Bluetooth_slave
             // and save it's id
             void onResult(BLEAdvertisedDevice device);
     };
+
 } // namespace Bluetooth_slave
 
 #endif
