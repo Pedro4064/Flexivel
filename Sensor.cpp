@@ -6,18 +6,18 @@ Sensor::Sensor(){
     SPI.begin();
 }
 
-void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double passo, double tensaoIni, double tensaoFin, double tensaoInv, double velocidadeScan, int NumCiclos){
+void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double data_array[]){
 
     LMP91000 pstat = LMP91000();
     MAX5481 gpot (5);
 
-    double Step = passo;
-    double voltageIni = tensaoIni;
-    double voltageEnd = tensaoFin;
-    double voltageInv = tensaoInv;
-    double scanRate = velocidadeScan;
+    double Step = data_array[1];
+    double voltageIni = data_array[2];
+    double voltageEnd = data_array[3];
+    double voltageInv = data_array[4];
+    double scanRate = data_array[5];
     double Vref;
-    int cicles = NumCiclos;
+    int cicles = data_array[6];
     int z;
 
     delay(50);

@@ -1,6 +1,6 @@
 #include "BLE.h"
 #include "Sensor.h"
-
+#define log(x) Serial.println(x);
 
 Bluetooth::BLE bluetooth;
 Sensor sensor;
@@ -27,10 +27,12 @@ void loop() {
     // Check if there is actual data or if it's null 
     if (incoming_data != NULL){
 
+      log(incoming_data[0]);
+      
       // If the data collection type is set to 0, it's VoltametriaCiclica
       if(incoming_data[0] = 0)
       {
-        sensor.VoltametriaCiclica(bluetooth,25, 25, 25, 150, 12.5, 1);
+        sensor.VoltametriaCiclica(bluetooth,incoming_data);
       }
 
       // If the data collection type is set to 1, it's Amperometria
