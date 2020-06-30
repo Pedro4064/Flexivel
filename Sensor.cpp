@@ -22,18 +22,20 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double data_array[]){
                                       voltageEnd: 100mV
                                       voltageInv: 500mV
                                       ScanRate: 100mV/s
+                                      step: 100mV
                                       cicles: 2
 
 
 
     */
-    double Step = data_array[4];
-    double voltageIni = data_array[5];
-    double voltageEnd = data_array[6];
-    double voltageInv = data_array[7];
+    double voltageIni = data_array[4];
+    double voltageEnd = data_array[5];
+    double voltageInv = data_array[6];
+    double Step = data_array[7];
     double scanRate = data_array[8];
-    double Vref;
     int cicles = data_array[9];
+
+    double Vref;
     int z;
 
     delay(50);
