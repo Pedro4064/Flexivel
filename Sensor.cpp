@@ -11,13 +11,29 @@ void Sensor::VoltametriaCiclica(Bluetooth::BLE& bluetooth,double data_array[]){
     LMP91000 pstat = LMP91000();
     MAX5481 gpot (5);
 
-    double Step = data_array[1];
-    double voltageIni = data_array[2];
-    double voltageEnd = data_array[3];
-    double voltageInv = data_array[4];
-    double scanRate = data_array[5];
+    /* We will be getting the array in the following format
+        
+        0;0.0;0.0;0.0;0.0;100;100;500;100;100;2
+        
+        where:
+            array[0] - will determine the measuring type 
+            array[1-4] - Pré-tratamento 
+            array[5-10] - arguments : voltageIni: 100mV
+                                      voltageEnd: 100mV
+                                      voltageInv: 500mV
+                                      ScanRate: 100mV/s
+                                      cicles: 2
+
+
+
+    */
+    double Step = data_array[4];
+    double voltageIni = data_array[5];
+    double voltageEnd = data_array[6];
+    double voltageInv = data_array[7];
+    double scanRate = data_array[8];
     double Vref;
-    int cicles = data_array[6];
+    int cicles = data_array[9];
     int z;
 
     delay(50);
