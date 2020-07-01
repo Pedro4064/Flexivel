@@ -30,13 +30,13 @@ void loop() {
       log(incoming_data[0]);
       
       // If the data collection type is set to 0, it's VoltametriaCiclica
-      if(incoming_data[0] = 0)
+      if(incoming_data[0] == 0)
       {
         sensor.VoltametriaCiclica(bluetooth,incoming_data);
       }
 
       // If the data collection type is set to 1, it's Amperometria
-      else if(incoming_data[0] = 1)
+      else if(incoming_data[0] == 1)
       {
         sensor.Amperometria(bluetooth,0, 2, 4, 10, 0.2);
       }
