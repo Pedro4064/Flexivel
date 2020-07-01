@@ -107,7 +107,8 @@ namespace Bluetooth
                 }
 
                 // Send the string and notify the cliente 
-                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                std::string value (data_string.c_str());
+                characteristicTX->setValue(value); //Make the string a c string(char*) to be sent via BLE 
                 characteristicTX->notify();
 
             }
