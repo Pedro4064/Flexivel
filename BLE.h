@@ -91,10 +91,9 @@ namespace Bluetooth
            
             // Method template that will take the data array, convert to string, send and notify the client
             template <typename T>
-            void sendDataArray(T data[], int array_size){
+            void sendDataArray(T data[], int array_size, String delimiter){
 
                 String data_string = ""; //String variable that will hold the string verion of the Variables
-                String delimiter = ",";  //Special character that will separate the datapoints 
 
                 for (int i = 0; i < array_size; i++){
 
@@ -107,7 +106,8 @@ namespace Bluetooth
                 }
 
                 // Send the string and notify the cliente 
-                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                std::string value(data_string.c_str());
+                characteristicTX->setValue(value); //Make the string a c string(char*) to be sent via BLE 
                 characteristicTX->notify();
 
             }
@@ -116,10 +116,8 @@ namespace Bluetooth
             template <typename T>
             void sendDataPoint(T data_point){
 
-                String data_string = String(data_point);
-
-                // Send the string and notify the cliente 
-                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                // Send the data and notify the cliente 
+                characteristicTX->setValue(data_point); //Make the string a c string(char*) to be sent via BLE 
                 characteristicTX->notify();
             }
            
