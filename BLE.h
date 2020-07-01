@@ -91,10 +91,9 @@ namespace Bluetooth
            
             // Method template that will take the data array, convert to string, send and notify the client
             template <typename T>
-            void sendDataArray(T data[], int array_size){
+            void sendDataArray(T data[], int array_size, String delimiter){
 
                 String data_string = ""; //String variable that will hold the string verion of the Variables
-                String delimiter = ",";  //Special character that will separate the datapoints 
 
                 for (int i = 0; i < array_size; i++){
 
