@@ -116,10 +116,8 @@ namespace Bluetooth
             template <typename T>
             void sendDataPoint(T data_point){
 
-                String data_string = String(data_point);
-
-                // Send the string and notify the cliente 
-                characteristicTX->setValue(data_string.c_str()); //Make the string a c string(char*) to be sent via BLE 
+                // Send the data and notify the cliente, setValue has many overloading 
+                characteristicTX->setValue(data_point);
                 characteristicTX->notify();
             }
            
