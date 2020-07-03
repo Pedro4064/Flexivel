@@ -22,7 +22,8 @@ namespace Bluetooth
 
     //callback para eventos das características
     class CharacteristicCallbacks: public BLECharacteristicCallbacks {
-        void onWrite(BLECharacteristic *characteristic);
+
+            void onWrite(BLECharacteristic *characteristic);
 
     };
 
@@ -55,7 +56,9 @@ namespace Bluetooth
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
             // True se algum dispositivo estiver conectado ao BLE, false otherwise
             static bool deviceConnected;
-
+            
+            // Variable that tracks rather there are new messages sent 
+            static bool new_message;
 
         // Private Methods 
         private:

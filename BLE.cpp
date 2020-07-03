@@ -19,6 +19,8 @@ namespace Bluetooth{
     // Methods for the CharacteristicCallbacks class 
     void CharacteristicCallbacks::onWrite(BLECharacteristic *characteristic){
 
+        // Since there is a new message, set the bool variable to true 
+        BLE::new_message = true;
 
         //retorna ponteiro para o registrador contendo o valor atual da caracteristica
         std::string rxValue = characteristic->getValue(); 
@@ -39,6 +41,7 @@ namespace Bluetooth{
 
     // Methods and variables for the BLE wrapper 
     bool BLE::deviceConnected = false;
+    bool BLE::new_message = false;
 
     void BLE::begin(){
 
