@@ -58,14 +58,11 @@ namespace Bluetooth{
         BLEService *pservice = pserver->createService(SERVICE_UUID);
 
         // Create a BLE Characteristic para envio de dados
-        characteristicTX = pservice->createCharacteristic(CHARACTERISTIC_UUID_TX, BLECharacteristic::PROPERTY_NOTIFY|
+        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID_TX, BLECharacteristic::PROPERTY_NOTIFY|
                                                                                   BLECharacteristic::PROPERTY_READ |
                                                                                   BLECharacteristic::PROPERTY_WRITE);
                                                                                   
-        characteristicTX->addDescriptor(new BLE2902());
-
-        // Create a BLE Characteristic para recebimento de dados
-        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID_RX, BLECharacteristic::PROPERTY_WRITE);
+        pcharacteristic->addDescriptor(new BLE2902());
         pcharacteristic->setCallbacks(new CharacteristicCallbacks());
 
         // Start the service
