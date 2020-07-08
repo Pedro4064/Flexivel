@@ -41,7 +41,7 @@ namespace Bluetooth{
 
     // Methods and variables for the BLE wrapper 
     bool BLE::deviceConnected = false;
-    bool BLE::new_message = false;
+    bool BLE::new_message = false; 
 
     void BLE::begin(){
 
