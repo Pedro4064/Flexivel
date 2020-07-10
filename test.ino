@@ -10,7 +10,7 @@ Bluetooth_slave::BLE_Slave ble_module(target_name, service_uuid, characteristic_
 
 void setup(){
 
-    
+    Serial.begin(9600);
 }
 
 void loop(){
