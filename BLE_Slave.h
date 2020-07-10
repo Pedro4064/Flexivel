@@ -20,9 +20,10 @@ namespace Bluetooth_slave
 
         //////////////////////////// private variable ////////////////////////////
         private:
-            BLEClient* bluetooth_client;
-            BLERemoteService* bluetooth_service;
-            BLERemoteCharacteristic* bluetooth_target_characteristc;
+
+            BLEClient* bluetooth_client; //BLE client used to connect to the server and get the services' UUIDs etc
+            BLERemoteService* bluetooth_service; //BLE service from the ble client we will use to get the characteristic we are interested 
+            BLERemoteCharacteristic* bluetooth_target_characteristc; //characteristic we are interested in to get the data we desire
 
             const char* service_uuid;
             const char* characteristic_uuid;
@@ -80,13 +81,12 @@ namespace Bluetooth_slave
                 Bluetooth_slave::BLE_Slave::message_read = false;
             }
 
-
-
             // Private method that takes an std::string and slices it into an array of chars 
             static BLE_Slave::data_information parseData(std::string data);
 
             // Mehtod that will receive the string data, parse it and return an int array with all datapoints 
             int* receivedDataAsIntArray();
+            
             // Mehtod that will receive the string data, parse it and return a float array with all datapoints 
             float* receivedDataAsFloarArray();
 

@@ -5,9 +5,7 @@ namespace Bluetooth_slave
 
     //////////////////////////// MyCallbacks Methods ////////////////////////////
 
-    MyCallbacks::MyCallbacks(BLE_Slave* ble_module){
-        bluetooth_module = ble_module;
-    }
+    MyCallbacks::MyCallbacks(BLE_Slave* ble_module) : bluetooth_module(ble_module) {}
 
     void MyCallbacks::onResult(BLEAdvertisedDevice device){
 
@@ -26,7 +24,10 @@ namespace Bluetooth_slave
             log("");
             log("");
             
+            // since we found the device, save the address to connect to 
             *bluetooth_module->target_device_address = device.getAddress();
+            
+            // Since we found the deivce, stop scanning for more devices 
             bluetooth_module->scan->stop();
 
             // connect to the server 
@@ -73,6 +74,7 @@ namespace Bluetooth_slave
     void BLE_Slave::connect_to_server(){
 
         log("[BLE_Slave] Connecting to server ...");
+
         // create a client 
         bluetooth_client = BLEDevice::createClient();
 
