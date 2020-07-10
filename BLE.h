@@ -22,7 +22,8 @@ namespace Bluetooth
 
     //callback para eventos das características
     class CharacteristicCallbacks: public BLECharacteristicCallbacks {
-        void onWrite(BLECharacteristic *characteristic);
+
+            void onWrite(BLECharacteristic *characteristic);
 
     };
 
@@ -36,8 +37,7 @@ namespace Bluetooth
             const char* CHARACTERISTIC_UUID_RX = "4ac8a682-9736-4e5d-932b-e9b31405049c";
             const char* CHARACTERISTIC_UUID_TX = "0972EF8C-7613-4075-AD52-756F33D4DA91";
 
-            BLECharacteristic* characteristicTX;  // Através desse objeto iremos enviar dados para o client
-            BLECharacteristic* pcharacteristic;   // BLE Characteristic para recebimento de dados
+            BLECharacteristic* pcharacteristic;   // BLE Characteristic para comunicação
        
             std::string DeviceName = "ESP32-BLE"; // Default name for the device 
 
@@ -55,7 +55,9 @@ namespace Bluetooth
             // Variavel static para que possa ser acessada sem ter que necessariamente instanciar a classe.
             // True se algum dispositivo estiver conectado ao BLE, false otherwise
             static bool deviceConnected;
-
+            
+            // Variable that tracks rather there are new messages sent 
+            static bool new_message;
 
         // Private Methods 
         private:
@@ -106,9 +108,9 @@ namespace Bluetooth
                 }
 
                 // Send the string and notify the cliente 
-                std::string value(data_string.c_str());
-                characteristicTX->setValue(value); //Make the string a c string(char*) to be sent via BLE 
-                characteristicTX->notify();
+                std::string value (data_string.c_str());
+                pcharacteristic->setValue(value); //Make the string a c string(char*) to be sent via BLE 
+                pcharacteristic->notify();
 
             }
 
@@ -116,9 +118,9 @@ namespace Bluetooth
             template <typename T>
             void sendDataPoint(T data_point){
 
-                // Send the data and notify the cliente 
-                characteristicTX->setValue(data_point); //Make the string a c string(char*) to be sent via BLE 
-                characteristicTX->notify();
+                // Send the data and notify the cliente, setValue has many overloading 
+                pcharacteristic->setValue(data_point);
+                pcharacteristic->notify();
             }
            
             // Release memory allocated dynamically by an array back to the system
