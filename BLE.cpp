@@ -58,7 +58,7 @@ namespace Bluetooth{
         BLEService *pservice = pserver->createService(SERVICE_UUID);
 
         // Create a BLE Characteristic para envio de dados
-        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID_TX, BLECharacteristic::PROPERTY_NOTIFY|
+        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_NOTIFY|
                                                                                   BLECharacteristic::PROPERTY_READ |
                                                                                   BLECharacteristic::PROPERTY_WRITE);
                                                                                   
@@ -69,7 +69,11 @@ namespace Bluetooth{
         pservice->start();
 
         // Start advertising (descoberta do ESP32)
-        pserver->getAdvertising()->start();
+        BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+        pAdvertising->addServiceUUID(SERVICE_UUID);
+        pAdvertising->setScanResponse(false);
+        pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
+        BLEDevice::startAdvertising();
     }
 
     void BLE::setDeviceName(std::string name){
