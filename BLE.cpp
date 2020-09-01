@@ -88,7 +88,7 @@ namespace Bluetooth{
         // Instantiate the struct that will hold all data info 
         BLE::data_information data_info;
 
-        // iterate through the string, check how many , there are
+        // iterate through the string, check how many ","  there are
         int comma_counter = 0;
         for (char& character : data){
 
