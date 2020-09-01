@@ -24,7 +24,7 @@ class Sensor{
     
     public: 
         Sensor();
-        void VoltametriaCiclica(Bluetooth::BLE& bluetooth, double data_array[]);
+        void VoltametriaCiclica(double data_array[]);
         void Amperometria(Bluetooth::BLE& bluetooth, double tensaoIni, double tensao, int tempo, int intervalo, double frequencia);
 };
 
