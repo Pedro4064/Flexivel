@@ -1,8 +1,9 @@
-#include "BLE.h"
 #include "Sensor.h"
+#include<Arduino.h>
+
 #define log(x) Serial.println(x);
 
-Bluetooth::BLE bluetooth;
+
 Sensor sensor;
 
 
@@ -10,48 +11,35 @@ void setup()
 {
 
   Serial.begin(115200);
-  bluetooth.begin();
 
 }
   
 void loop() {
   
-  delay(1000);
-  
-  //se existe algum dispositivo conectado
-  if(Bluetooth::BLE::deviceConnected)
-  {
+  log("Iniciando Medições ...");
 
-    // Check to see if there are any new messages 
-    if (Bluetooth::BLE::new_message){
-
-      // Receive the data as an array of doubles 
-      double* incoming_data = bluetooth.receivedDataAsDoubleArray();
-
-      // Mark message as read
-      Bluetooth::BLE::new_message = false;
-
-      // Check if there is actual data or if it's null 
-      if (incoming_data != NULL){
-
-        log(incoming_data[0]);
+  // O array que contém os dados na seguinte ordem : 
+  /* We will be getting the array in the following format
         
-        // If the data collection type is set to 0, it's VoltametriaCiclica
-        if(incoming_data[0] == 0)
-        {
-          sensor.VoltametriaCiclica(bluetooth,incoming_data);
-        }
+        0;0.0;0.0;0.0;0.0;100;100;500;100;100;2
+        
+        where:
+            array[0] - will determine the measuring type 
+            array[1-4] - Pré-tratamento 
+            array[5-10] - arguments : voltageIni: 100mV
+                                      voltageEnd: 100mV
+                                      voltageInv: 500mV
+                                      ScanRate: 100mV/s
+                                      step: 100mV
+                                      cicles: 2
+    */
 
-        // If the data collection type is set to 1, it's Amperometria
-        else if(incoming_data[0] == 1)
-        {
-          sensor.Amperometria(bluetooth,0, 2, 4, 10, 0.2);
-        }
+
+    double incoming_data[] = {0,0.0,0.0,0.0,0.0,100,100,500,100,100};
+    log(incoming_data[0]);
+
+    sensor.VoltametriaCiclica(incoming_data);
+  
 
 
-        // After using the data in the BLE call, release the memory back to the system to avoid memory leaking
-        Bluetooth::BLE::releaseMemoryToSystem(incoming_data);
-      }
-    }
-  }
 }
