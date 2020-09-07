@@ -49,21 +49,31 @@ namespace Bluetooth{
         BLEDevice::init(DeviceName); // nome do dispositivo bluetooth
 
         // Create the BLE Server
-        BLEServer *pserver = BLEDevice::createServer(); //cria um BLE server 
+        pserver = BLEDevice::createServer(); //cria um BLE server 
 
         // Set the server's callback
         pserver->setCallbacks(new ServerCallbacks());
 
         // Create the BLE Service
-        BLEService *pservice = pserver->createService(SERVICE_UUID);
+        pservice = pserver->createService(SERVICE_UUID);
 
-        // Create a BLE Characteristic para envio de dados
-        pcharacteristic = pservice->createCharacteristic(CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_NOTIFY|
-                                                                                  BLECharacteristic::PROPERTY_READ |
-                                                                                  BLECharacteristic::PROPERTY_WRITE);
-                                                                                  
-        pcharacteristic->addDescriptor(new BLE2902());
-        pcharacteristic->setCallbacks(new CharacteristicCallbacks());
+
+        // * Iterate though the map containing all the characteristics informations and initialize them 
+        for (auto& characteristic : characteristics_info){
+
+            // Create a BLE Characteristic 
+            BLECharacteristic* pcharacteristic = pservice->createCharacteristic(characteristic.second, BLECharacteristic::PROPERTY_NOTIFY|
+                                                                                    BLECharacteristic::PROPERTY_READ |
+                                                                                    BLECharacteristic::PROPERTY_WRITE);
+                                                                                    
+            pcharacteristic->addDescriptor(new BLE2902());
+            pcharacteristic->setCallbacks(new CharacteristicCallbacks());
+
+            // add it to the map 
+            characteristics_list[characteristic.first] = pcharacteristic;
+
+        }
+        
 
         // Start the service
         pservice->start();
@@ -82,6 +92,17 @@ namespace Bluetooth{
         DeviceName = name;
     }
    
+    void BLE::use_characteristic(String characteristic_name){
+        target_characteristic = characteristic_name;
+    }
+
+    void BLE::add_characteristic(String characteristic_name , const char* uuid){
+
+            // Add the characteristic to the map 
+            characteristics_info[characteristic_name] = uuid;
+
+    }
+
     BLE::data_information BLE::parseData(std::string data){
 
 
@@ -166,11 +187,11 @@ namespace Bluetooth{
         return data_info;
 
     }
-    
+
     double* BLE::receivedDataAsDoubleArray(){
 
         // Get the data 
-        std::string rxValue = pcharacteristic->getValue(); 
+        std::string rxValue = characteristics_list[target_characteristic]->getValue(); 
 
         // If the data is empty, return a null pointer 
         if (rxValue.length() <= 0){
@@ -207,7 +228,7 @@ namespace Bluetooth{
     int* BLE::receivedDataAsIntArray(){
 
         // Get the data 
-        std::string rxValue = pcharacteristic->getValue(); 
+        std::string rxValue = characteristics_list[target_characteristic]->getValue(); 
 
         // If the data is empty, return a null pointer 
         if (rxValue.length() <= 0){
@@ -245,7 +266,7 @@ namespace Bluetooth{
     float* BLE::receivedDataAsFloatArray(){
 
         // Get the data 
-        std::string rxValue = pcharacteristic->getValue(); 
+        std::string rxValue = characteristics_list[target_characteristic]->getValue(); 
 
         // If the data is empty, return a null pointer 
         if (rxValue.length() <= 0){
@@ -283,7 +304,7 @@ namespace Bluetooth{
     String BLE::receivedDataAsString(){
 
         // Get the data 
-        std::string rxValue = pcharacteristic->getValue(); 
+        std::string rxValue = characteristics_list[target_characteristic]->getValue(); 
 
         // If the data is empty, return a null pointer 
         if (rxValue.length() <= 0){

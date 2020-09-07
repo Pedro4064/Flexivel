@@ -8,6 +8,7 @@
 
 #include<Arduino.h>
 #include<string.h>
+#include<map>
 
 namespace Bluetooth
 {
@@ -36,15 +37,24 @@ namespace Bluetooth
             const char* SERVICE_UUID = "ab0828b1-198e-4351-b779-901fa0e0371e";
             const char* CHARACTERISTIC_UUID = "4ac8a682-9736-4e5d-932b-e9b31405049c";
 
-            BLECharacteristic* pcharacteristic;   // BLE Characteristic para comunicação
+            BLEServer* pserver;                   // pointer to the BLE server   
+            BLEService* pservice;                 // pointer to the service 
        
             std::string DeviceName = "ESP32-BLE"; // Default name for the device 
 
+            // The name of the characteristic the user wants to use in the moment 
+            String target_characteristic;
+
+            // map that will hold the infos for each characteristic until they are initialized
+            std::map<String, const char*> characteristics_info;
+
+            // map that will hold the info for all the characteristics being used 
+            std::map<String, BLECharacteristic*> characteristics_list;
 
         // Public Variables 
         public:
 
-            // Create struct that will hold all essential infromation about the parsed data 
+            // Create struct that will hold all essential information about the parsed data 
             struct data_information{
 
                 int array_size;
@@ -68,15 +78,25 @@ namespace Bluetooth
         // Public Methods 
         public:
 
+            // Deconstructor 
+            ~BLE(){
+
+                // ! We need to iterate through the map of characteristic and release memory to the system 
+                for (auto&  characteristic : characteristics_list){
+                    delete characteristic.second;
+                }
+            }
+           
             // Method que será chamada no main void setUp() para inicializar todo o sistema BLE 
             void begin();
 
-            // Method to set the name which the ESP32 will be discoverable to other deivces
+            // Method to set the name which the ESP32 will be discoverable to other devices
             void setDeviceName(std::string name);
+           
+            // Method used to change which characteristic the user is interacting with
+            void use_characteristic(String characteristic_name);
 
-           
-           
-            // Method que irá receber e parse the incomming data into an array of boubles and return its pointer
+            // Method que irá receber e parse the incoming data into an array of doubles and return its pointer
             double* receivedDataAsDoubleArray();
            
             // Mehtod that will receive the string data, parse it and return an int array with all datapoints 
@@ -85,10 +105,12 @@ namespace Bluetooth
             // Mehtod that will receive the string data, parse it and return a float array with all datapoints 
             float* receivedDataAsFloatArray();
            
-            // Method que irá receber e transformar the incomming data into a string 
+            // Method que irá receber e transformar the incoming data into a string 
             String receivedDataAsString();
 
-           
+            // Mehtod that will receive the name and the uuid for a charactertic, instantiate the ble
+            // charactertic class   and save its pointer and name to the map 
+           void add_characteristic(String characteristic_name, const char* uuid);
            
             // Method template that will take the data array, convert to string, send and notify the client
             template <typename T>
@@ -108,8 +130,8 @@ namespace Bluetooth
 
                 // Send the string and notify the cliente 
                 std::string value (data_string.c_str());
-                pcharacteristic->setValue(value); //Make the string a c string(char*) to be sent via BLE 
-                pcharacteristic->notify();
+                characteristics_list[target_characteristic]->setValue(value); //Make the string a c string(char*) to be sent via BLE 
+                characteristics_list[target_characteristic]->notify();
 
             }
 
@@ -118,8 +140,8 @@ namespace Bluetooth
             void sendDataPoint(T data_point){
 
                 // Send the data and notify the cliente, setValue has many overloading 
-                pcharacteristic->setValue(data_point);
-                pcharacteristic->notify();
+                characteristics_list[target_characteristic]->setValue(data_point);
+                characteristics_list[target_characteristic]->notify();
             }
            
             // Release memory allocated dynamically by an array back to the system
